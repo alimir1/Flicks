@@ -16,18 +16,19 @@ class MovieDetailViewController: UIViewController {
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var contentView: UIView!
     
-    var movie: NSDictionary!
+    var movie: Movie!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let title = movie["title"] as? String
         scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: contentView.frame.origin.y + contentView.frame.height)
         self.navigationItem.title = title
-        overViewLabel.text = movie["overview"] as? String
+        overViewLabel.text = movie.overview
         overViewLabel.sizeToFit()
-        let posterImageStr = "https://image.tmdb.org/t/p/original" + (movie["poster_path"] as! String)
-        let posterImageURL = URL(string: posterImageStr)!
-        posterImageView.setImageWith(posterImageURL)
+        if let posterImageURL = movie.posterImageURLHigh {
+            posterImageView.setImageWith(posterImageURL)
+        } else {
+            // FIXME: - set placeholder here
+        }
         
     }
 }

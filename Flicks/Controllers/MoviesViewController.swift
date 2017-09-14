@@ -14,7 +14,7 @@ class MoviesViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
     
     var refreshControl: UIRefreshControl!
-    var movies: [NSDictionary]?
+    var movies: [Movie] = []
     
     var endpoint = ""
 
@@ -31,7 +31,8 @@ class MoviesViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "movieDetail" {
             let movieDetailVC = segue.destination as! MovieDetailViewController
-            movieDetailVC.movie = movies![tableView.indexPathForSelectedRow!.row]
+            let indexPath = tableView.indexPath(for: sender as! UITableViewCell)
+            movieDetailVC.movie = movies[indexPath!.row]
         }
     }
     
@@ -49,7 +50,8 @@ class MoviesViewController: UIViewController {
         { (dataOrNil, response, error) in
             if let data = dataOrNil {
                 if let responseDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
-                    self.movies = responseDictionary["results"] as? [NSDictionary]
+                    let movieDictionaries = responseDictionary["results"] as? [NSDictionary]
+                    self.movies = Movie.movies(from: movieDictionaries ?? [])
                     self.tableView.reloadData()
                 }
             }
@@ -70,21 +72,22 @@ extension MoviesViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return movies?.count ?? 0
+        return movies.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "flickCell", for: indexPath) as! MovieCell
-        guard let movie = movies?[indexPath.row] else { return cell }
-        let posterImageStr = "https://image.tmdb.org/t/p/w500" + (movie["poster_path"] as! String)
-        let posterImageURL = URL(string: posterImageStr)!
-        cell.titleLabel.text = movie["title"] as? String
-        cell.overViewLabel.text = movie["overview"] as? String
-        let releaseYear = (movie["release_date"] as! String).characters.split(separator: "-").map {String($0)}[0]
-        cell.releaseYearLabel.text = releaseYear
-        let avgRating = Double(movie["vote_average"] as! NSNumber)
-        cell.averageVoteLabel.text = String(format: "%.1f", avgRating)
-        cell.posterImageView.setImageWith(posterImageURL)
+        let movie = movies[indexPath.row]
+        cell.titleLabel.text = movie.title
+        cell.overViewLabel.text = movie.overview
+        cell.releaseYearLabel.text = movie.releaseYear
+        cell.averageVoteLabel.text = String(format: "%.1f", movie.avgRating ?? 0)
+        if let posterImageURL = movie.posterImageURLMedium {
+            cell.posterImageView.setImageWith(posterImageURL)
+        } else {
+            // FIXME: - Set placeholder
+        }
+        
         
         return cell
     }
