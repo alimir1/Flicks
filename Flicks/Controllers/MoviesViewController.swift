@@ -7,9 +7,9 @@
 //
 
 import UIKit
-import AFNetworking
+import MBProgressHUD
 
-class MoviesViewController: UIViewController {
+class MoviesViewController: UIViewController, TheMovieDBDelegate {
     
     @IBOutlet var tableView: UITableView!
     
@@ -17,15 +17,19 @@ class MoviesViewController: UIViewController {
     var movies: [Movie] = []
     
     var endpoint = ""
+    
+    var movieAPI: TheMovieDBApi!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-        fetchDataFromWeb()
+        movieAPI = TheMovieDBApi(endpoint: endpoint)
+        movieAPI.delegate = self
         refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(self.fetchDataFromWeb), for: .valueChanged)
         tableView.insertSubview(refreshControl, at: 0)
+        fetchDataFromWeb()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -36,30 +40,35 @@ class MoviesViewController: UIViewController {
         }
     }
     
-    @objc func fetchDataFromWeb() {
-        let url = URL(string: "https://api.themoviedb.org/3/movie/\(endpoint)?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed")
-        var request = URLRequest(url: url!)
-        request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
-        let session = URLSession(
-            configuration: URLSessionConfiguration.default,
-            delegate:nil,
-            delegateQueue:OperationQueue.main
-        )
-        
-        let task : URLSessionDataTask = session.dataTask(with: request, completionHandler:
-        { (dataOrNil, response, error) in
-            if let data = dataOrNil {
-                if let responseDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
-                    let movieDictionaries = responseDictionary["results"] as? [NSDictionary]
-                    self.movies = Movie.movies(from: movieDictionaries ?? [])
-                    self.tableView.reloadData()
-                }
-            }
+    func theMovieDB(didFinishUpdatingMovies movies: [Movie]) {
+        MBProgressHUD.hide(for: self.view, animated: true)
+        self.movies = movies
+        DispatchQueue.main.async {
             if self.refreshControl.isRefreshing {
                 self.refreshControl.endRefreshing()
             }
-        });
-        task.resume()
+            self.tableView.reloadData()
+        }
+    }
+    
+    func theMovieDB(didFailWithError error: Error) {
+        MBProgressHUD.hide(for: self.view, animated: true)
+        DispatchQueue.main.async {
+            if self.refreshControl.isRefreshing {
+                self.refreshControl.endRefreshing()
+            }
+        }
+        
+        let alertCtrl = UIAlertController(title: "Yikes!", message: "\(error.localizedDescription)", preferredStyle: .alert)
+        alertCtrl.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alertCtrl, animated: true, completion: nil)
+    }
+    
+    @objc func fetchDataFromWeb() {
+        if !self.refreshControl.isRefreshing {
+            MBProgressHUD.showAdded(to: self.view, animated: true)
+        }
+        movieAPI.startUpdatingMovies()
     }
 
 }

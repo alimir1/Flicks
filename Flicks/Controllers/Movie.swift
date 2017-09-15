@@ -27,12 +27,12 @@ class Movie: NSObject {
         self.releaseYear = releaseYear
         self.avgRating = avgRating
         if let posterImagePath = posterImagePath {
-            self.posterImageURLMedium = URL(string: TheMovieDbApi.posterImageBaseStr + "w500" + posterImagePath)
-            self.posterImageURLHigh = URL(string: TheMovieDbApi.posterImageBaseStr + "original" + posterImagePath)
+            self.posterImageURLMedium = URL(string: TheMovieDBApi.posterImageBaseStr + "w500" + posterImagePath)
+            self.posterImageURLHigh = URL(string: TheMovieDBApi.posterImageBaseStr + "original" + posterImagePath)
         }
     }
     
-    class func movies(from dictionaries: [NSDictionary]) -> [Movie] {
+    class func movies(with dictionaries: [NSDictionary]) -> [Movie] {
         return dictionaries.map {Movie(dictionary: $0)}
     }
     
