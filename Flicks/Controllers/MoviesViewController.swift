@@ -12,6 +12,7 @@ import MBProgressHUD
 class MoviesViewController: UIViewController, TheMovieDBDelegate {
     
     @IBOutlet var tableView: UITableView!
+    var collectionView: UICollectionView!
     
     var refreshControl: UIRefreshControl!
     var movies = [Movie]() {
@@ -25,6 +26,7 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
     var movieAPI: TheMovieDBApi!
     
     var tableViewDataSource = MoviesTableViewDataSource()
+    var collectionViewDataSource = MoviesCollectionViewDataSource()
     
     var errorBannerView: UIView!
     
@@ -36,6 +38,11 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        collectionView = UICollectionView(frame: view.frame, collectionViewLayout: GridLayout())
+        self.view.addSubview(collectionView)
+        collectionView.dataSource = collectionViewDataSource
+        
         tableView.delegate = self
         tableView.dataSource = tableViewDataSource
         movieAPI = TheMovieDBApi(endpoint: endpoint)

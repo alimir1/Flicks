@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GirdLayout: UICollectionViewFlowLayout {
+class GridLayout: UICollectionViewFlowLayout {
     
     override init() {
         super.init()
