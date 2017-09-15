@@ -18,9 +18,7 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
     
     @IBOutlet var tableView: UITableView!
     var collectionView: UICollectionView!
-    
     var changeLayoutBarButtonItem: UIBarButtonItem!
-    
     var tableViewRefreshControl: UIRefreshControl!
     var collectionViewRefreshControl: UIRefreshControl!
     
@@ -47,14 +45,10 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
     }
     
     var endpoint = ""
-    
     var movieAPI: TheMovieDBApi!
-    
     var tableViewDataSource = MoviesTableViewDataSource()
     var collectionViewDataSource = MoviesCollectionViewDataSource()
-    
     var errorBannerView: UIView!
-    
     var isErrorBannerDisplayed: Bool! {
         didSet {
             errorBannerView.isHidden = !isErrorBannerDisplayed
@@ -63,48 +57,14 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        collectionView = UICollectionView(frame: view.frame, collectionViewLayout: GridLayout())
-        collectionView.backgroundColor = .white
-        collectionView.register(MovieCollectionCell.self, forCellWithReuseIdentifier: "movieCollectionCell")
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.dataSource = collectionViewDataSource
-        self.view.addSubview(collectionView)
-        
-        tableView.delegate = self
-        tableView.dataSource = tableViewDataSource
-        movieAPI = TheMovieDBApi(endpoint: endpoint)
-        movieAPI.delegate = self
-        
-        
-        collectionViewRefreshControl = UIRefreshControl()
-        collectionViewRefreshControl.addTarget(self, action: #selector(self.fetchDataFromWeb), for: .valueChanged)
-        collectionView.insertSubview(collectionViewRefreshControl, at: 0)
-        
-        
-        tableViewRefreshControl = UIRefreshControl()
-        tableViewRefreshControl.addTarget(self, action: #selector(self.fetchDataFromWeb), for: .valueChanged)
-        tableView.insertSubview(tableViewRefreshControl, at: 0)
-        
+        setupViews()
         fetchDataFromWeb()
-        
         self.edgesForExtendedLayout = []
-        
-        setupErrorBannerView()
         isErrorBannerDisplayed = false
-        
         displayType = .list
-        
-        setupChangeLayoutBarButton()
-        
-        
     }
     
-    func setupChangeLayoutBarButton() {
-        changeLayoutBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(self.switchLayout))
-        changeLayoutBarButtonItem.title = "Change Layout"
-        self.navigationItem.leftBarButtonItem = changeLayoutBarButtonItem
-    }
+    // Target Action
     
     func switchLayout() {
         switch displayType {
@@ -114,15 +74,11 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
             displayType = .grid
         }
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "movieDetail" {
-            let movieDetailVC = segue.destination as! MovieDetailViewController
-            let indexPath = tableView.indexPath(for: sender as! UITableViewCell)
-            movieDetailVC.movie = movies[indexPath!.row]
-        }
-    }
-    
+}
+
+// MARK: - TheMovieDb
+
+extension MoviesViewController {
     func theMovieDB(didFinishUpdatingMovies movies: [Movie]) {
         MBProgressHUD.hide(for: self.view, animated: true)
         self.movies = movies
@@ -146,6 +102,71 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
         MBProgressHUD.showAdded(to: self.view, animated: true)
         movieAPI.startUpdatingMovies()
     }
+}
+
+// MARK: - Navigation
+
+extension MoviesViewController {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "movieDetail" {
+            let movieDetailVC = segue.destination as! MovieDetailViewController
+            let indexPath = tableView.indexPath(for: sender as! UITableViewCell)
+            movieDetailVC.movie = movies[indexPath!.row]
+        }
+    }
+}
+
+// MARK: - TableView Delegate
+
+extension MoviesViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
+    }
+}
+
+// MARK: - Helpers
+
+extension MoviesViewController {
+    func setupViews() {
+        setupErrorBannerView()
+        setupCollectionView()
+        setupTableView()
+        setupRefreshControls()
+        setupChangeLayoutBarButton()
+    }
+    
+    func setupCollectionView() {
+        collectionView = UICollectionView(frame: view.frame, collectionViewLayout: GridLayout())
+        collectionView.backgroundColor = .white
+        collectionView.register(MovieCollectionCell.self, forCellWithReuseIdentifier: "movieCollectionCell")
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.dataSource = collectionViewDataSource
+        self.view.addSubview(collectionView)
+    }
+    
+    func setupTableView() {
+        tableView.delegate = self
+        tableView.dataSource = tableViewDataSource
+        movieAPI = TheMovieDBApi(endpoint: endpoint)
+        movieAPI.delegate = self
+    }
+    
+    func setupRefreshControls() {
+        collectionViewRefreshControl = UIRefreshControl()
+        collectionViewRefreshControl.addTarget(self, action: #selector(self.fetchDataFromWeb), for: .valueChanged)
+        collectionView.insertSubview(collectionViewRefreshControl, at: 0)
+        
+        
+        tableViewRefreshControl = UIRefreshControl()
+        tableViewRefreshControl.addTarget(self, action: #selector(self.fetchDataFromWeb), for: .valueChanged)
+        tableView.insertSubview(tableViewRefreshControl, at: 0)
+    }
+    
+    func setupChangeLayoutBarButton() {
+        changeLayoutBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(self.switchLayout))
+        changeLayoutBarButtonItem.title = "Change Layout"
+        self.navigationItem.leftBarButtonItem = changeLayoutBarButtonItem
+    }
     
     func setupErrorBannerView() {
         let errorView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 45))
@@ -159,13 +180,5 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
         errorView.addSubview(errorLabel)
         errorBannerView = errorView
         self.view.addSubview(errorBannerView)
-    }
-
-}
-
-
-extension MoviesViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: false)
     }
 }
