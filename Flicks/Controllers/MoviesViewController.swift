@@ -80,8 +80,10 @@ class MoviesViewController: UIViewController {
     func switchLayout() {
         switch displayType {
         case .grid:
+            changeLayoutBarButtonItem.title = "Grid"
             displayType = .list
         case .list:
+            changeLayoutBarButtonItem.title = "List"
             displayType = .grid
         }
     }
@@ -181,8 +183,7 @@ extension MoviesViewController {
     }
     
     func setupChangeLayoutBarButton() {
-        changeLayoutBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(self.switchLayout))
-        changeLayoutBarButtonItem.title = "Change Layout"
+        changeLayoutBarButtonItem = UIBarButtonItem(title: "Grid", style: .plain, target: self, action: #selector(self.switchLayout))
         self.navigationItem.leftBarButtonItem = changeLayoutBarButtonItem
     }
     
