@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		490A529C1F6B859A00D4083E /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = 490A529B1F6B859A00D4083E /* FontAwesome.otf */; };
 		4910B4DC1F6B1828005A64F7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4910B4DB1F6B1828005A64F7 /* Main.storyboard */; };
 		4910B4DE1F6B2029005A64F7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4910B4DD1F6B2029005A64F7 /* LaunchScreen.storyboard */; };
 		4910B4E01F6B4220005A64F7 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4910B4DF1F6B4220005A64F7 /* Movie.swift */; };
@@ -20,8 +21,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4910B4DB1F6B1828005A64F7 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Views/Main.storyboard; sourceTree = "<group>"; };
-		4910B4DD1F6B2029005A64F7 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		490A529B1F6B859A00D4083E /* FontAwesome.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.otf; sourceTree = "<group>"; };
+		4910B4DB1F6B1828005A64F7 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		4910B4DD1F6B2029005A64F7 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ../LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4910B4DF1F6B4220005A64F7 /* Movie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Movie.swift; path = Controllers/Movie.swift; sourceTree = "<group>"; };
 		4910B4E11F6B4316005A64F7 /* TheMovieDBApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TheMovieDBApi.swift; path = Controllers/TheMovieDBApi.swift; sourceTree = "<group>"; };
 		49DEEC9A1F69B501005F783C /* Flicks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flicks.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -56,6 +58,23 @@
 				C2ADCDDD67C5DA620DF48642 /* Pods-Flicks.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		490A529D1F6B859B00D4083E /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				490A529B1F6B859A00D4083E /* FontAwesome.otf */,
+			);
+			name = Fonts;
+			sourceTree = "<group>";
+		};
+		490A529E1F6B85A500D4083E /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				49DEECA41F69B501005F783C /* Assets.xcassets */,
+				490A529D1F6B859B00D4083E /* Fonts */,
+			);
+			name = Assets;
 			sourceTree = "<group>";
 		};
 		4910B4E31F6B4325005A64F7 /* Models */ = {
@@ -101,9 +120,7 @@
 				4910B4E31F6B4325005A64F7 /* Models */,
 				49DEECB31F69BFD8005F783C /* Controllers */,
 				49DEECB21F69BFCC005F783C /* Views */,
-				4910B4DB1F6B1828005A64F7 /* Main.storyboard */,
-				4910B4DD1F6B2029005A64F7 /* LaunchScreen.storyboard */,
-				49DEECA41F69B501005F783C /* Assets.xcassets */,
+				490A529E1F6B85A500D4083E /* Assets */,
 				49DEECA91F69B502005F783C /* Info.plist */,
 			);
 			path = Flicks;
@@ -112,6 +129,8 @@
 		49DEECB21F69BFCC005F783C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4910B4DB1F6B1828005A64F7 /* Main.storyboard */,
+				4910B4DD1F6B2029005A64F7 /* LaunchScreen.storyboard */,
 				49DEECB01F69BFCA005F783C /* MovieCell.swift */,
 			);
 			path = Views;
@@ -198,6 +217,7 @@
 			files = (
 				4910B4DE1F6B2029005A64F7 /* LaunchScreen.storyboard in Resources */,
 				4910B4DC1F6B1828005A64F7 /* Main.storyboard in Resources */,
+				490A529C1F6B859A00D4083E /* FontAwesome.otf in Resources */,
 				49DEECA51F69B501005F783C /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

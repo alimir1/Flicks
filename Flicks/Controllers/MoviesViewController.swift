@@ -19,6 +19,30 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
     var endpoint = ""
     
     var movieAPI: TheMovieDBApi!
+    
+    var errorBannerView: UIView!
+    
+    var isErrorBannerDisplayed: Bool! {
+        didSet {
+            errorBannerView.isHidden = !isErrorBannerDisplayed
+        }
+    }
+    
+    
+    var NetworkErrorBanner: UIView {
+        let errorView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 45))
+        errorView.backgroundColor = .darkGray
+        let errorLabel = UILabel(frame: CGRect(x: errorView.bounds.origin.x + 8, y: errorView.bounds.origin.y + 8, width: errorView.bounds.width - (8*2), height: errorView.bounds.height - (8*2)))
+        errorLabel.textColor = .white
+        let mutableString = NSMutableAttributedString(attributedString: NSAttributedString(string: "   ", attributes: [NSFontAttributeName : UIFont(name: "FontAwesome", size: 17)!, NSForegroundColorAttributeName : UIColor.lightGray]))
+        mutableString.append(NSAttributedString(string: "Network Error", attributes: [NSFontAttributeName : UIFont(name: "HelveticaNeue-Bold", size: 15)!, NSForegroundColorAttributeName : UIColor.white]))
+        errorLabel.attributedText = mutableString
+        errorLabel.textAlignment = .center
+        errorView.addSubview(errorLabel)
+        return errorView
+    }
+    
+    var isListView: Bool = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +54,12 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
         refreshControl.addTarget(self, action: #selector(self.fetchDataFromWeb), for: .valueChanged)
         tableView.insertSubview(refreshControl, at: 0)
         fetchDataFromWeb()
+        
+        self.edgesForExtendedLayout = []
+        
+        errorBannerView = NetworkErrorBanner
+        isErrorBannerDisplayed = false
+        self.view.addSubview(errorBannerView)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -49,6 +79,7 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
             }
             self.tableView.reloadData()
         }
+        isErrorBannerDisplayed = false
     }
     
     func theMovieDB(didFailWithError error: Error) {
@@ -58,16 +89,11 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
                 self.refreshControl.endRefreshing()
             }
         }
-        
-        let alertCtrl = UIAlertController(title: "Yikes!", message: "\(error.localizedDescription)", preferredStyle: .alert)
-        alertCtrl.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        present(alertCtrl, animated: true, completion: nil)
+        isErrorBannerDisplayed = true
     }
     
     @objc func fetchDataFromWeb() {
-        if !self.refreshControl.isRefreshing {
-            MBProgressHUD.showAdded(to: self.view, animated: true)
-        }
+        MBProgressHUD.showAdded(to: self.view, animated: true)
         movieAPI.startUpdatingMovies()
     }
 

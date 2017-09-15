@@ -19,8 +19,8 @@ enum TheMovieDBErrors: Error {
 
 extension TheMovieDBErrors: LocalizedError {
     public var errorDescription: String? {
-        let defaultMessage = "Unknown error! Please try again later."
-        let internalErrorMessage = "Something weird happened on our side. Please contact our support team and we'll do our best to do better next time!"
+        let defaultMessage = "Unknown error!"
+        let internalErrorMessage = "Something's wrong! Please contact our support team."
         switch self {
         case .networkFail(let localizedDescription):
             print(localizedDescription)
