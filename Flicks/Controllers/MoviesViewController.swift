@@ -28,20 +28,6 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
         }
     }
     
-    
-    var NetworkErrorBanner: UIView {
-        let errorView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 45))
-        errorView.backgroundColor = .darkGray
-        let errorLabel = UILabel(frame: CGRect(x: errorView.bounds.origin.x + 8, y: errorView.bounds.origin.y + 8, width: errorView.bounds.width - (8*2), height: errorView.bounds.height - (8*2)))
-        errorLabel.textColor = .white
-        let mutableString = NSMutableAttributedString(attributedString: NSAttributedString(string: "   ", attributes: [NSFontAttributeName : UIFont(name: "FontAwesome", size: 17)!, NSForegroundColorAttributeName : UIColor.lightGray]))
-        mutableString.append(NSAttributedString(string: "Network Error", attributes: [NSFontAttributeName : UIFont(name: "HelveticaNeue-Bold", size: 15)!, NSForegroundColorAttributeName : UIColor.white]))
-        errorLabel.attributedText = mutableString
-        errorLabel.textAlignment = .center
-        errorView.addSubview(errorLabel)
-        return errorView
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
@@ -55,9 +41,8 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
         
         self.edgesForExtendedLayout = []
         
-        errorBannerView = NetworkErrorBanner
+        setupErrorBannerView()
         isErrorBannerDisplayed = false
-        self.view.addSubview(errorBannerView)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -93,6 +78,20 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
     @objc func fetchDataFromWeb() {
         MBProgressHUD.showAdded(to: self.view, animated: true)
         movieAPI.startUpdatingMovies()
+    }
+    
+    func setupErrorBannerView() {
+        let errorView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 45))
+        errorView.backgroundColor = .darkGray
+        let errorLabel = UILabel(frame: CGRect(x: errorView.bounds.origin.x + 8, y: errorView.bounds.origin.y + 8, width: errorView.bounds.width - 8, height: errorView.bounds.height - 8))
+        errorLabel.textColor = .white
+        let mutableString = NSMutableAttributedString(attributedString: NSAttributedString(string: "   ", attributes: [NSFontAttributeName : UIFont(name: "FontAwesome", size: 17)!, NSForegroundColorAttributeName : UIColor.lightGray]))
+        mutableString.append(NSAttributedString(string: "Network Error", attributes: [NSFontAttributeName : UIFont(name: "HelveticaNeue-Bold", size: 15)!, NSForegroundColorAttributeName : UIColor.white]))
+        errorLabel.attributedText = mutableString
+        errorLabel.textAlignment = .center
+        errorView.addSubview(errorLabel)
+        errorBannerView = errorView
+        self.view.addSubview(errorBannerView)
     }
 
 }
