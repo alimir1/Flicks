@@ -21,7 +21,9 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
     
     var changeLayoutBarButtonItem: UIBarButtonItem!
     
-    var refreshControl: UIRefreshControl!
+    var tableViewRefreshControl: UIRefreshControl!
+    var collectionViewRefreshControl: UIRefreshControl!
+    
     var movies = [Movie]() {
         didSet {
             tableViewDataSource.movies = movies
@@ -73,9 +75,17 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
         tableView.dataSource = tableViewDataSource
         movieAPI = TheMovieDBApi(endpoint: endpoint)
         movieAPI.delegate = self
-        refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(self.fetchDataFromWeb), for: .valueChanged)
-        tableView.insertSubview(refreshControl, at: 0)
+        
+        
+        collectionViewRefreshControl = UIRefreshControl()
+        collectionViewRefreshControl.addTarget(self, action: #selector(self.fetchDataFromWeb), for: .valueChanged)
+        collectionView.insertSubview(collectionViewRefreshControl, at: 0)
+        
+        
+        tableViewRefreshControl = UIRefreshControl()
+        tableViewRefreshControl.addTarget(self, action: #selector(self.fetchDataFromWeb), for: .valueChanged)
+        tableView.insertSubview(tableViewRefreshControl, at: 0)
+        
         fetchDataFromWeb()
         
         self.edgesForExtendedLayout = []
@@ -117,9 +127,8 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
         MBProgressHUD.hide(for: self.view, animated: true)
         self.movies = movies
         DispatchQueue.main.async {
-            if self.refreshControl.isRefreshing {
-                self.refreshControl.endRefreshing()
-            }
+            self.tableViewRefreshControl.endRefreshing()
+            self.collectionViewRefreshControl.endRefreshing()
         }
         isErrorBannerDisplayed = false
     }
@@ -127,9 +136,8 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
     func theMovieDB(didFailWithError error: Error) {
         MBProgressHUD.hide(for: self.view, animated: true)
         DispatchQueue.main.async {
-            if self.refreshControl.isRefreshing {
-                self.refreshControl.endRefreshing()
-            }
+            self.tableViewRefreshControl.endRefreshing()
+            self.collectionViewRefreshControl.endRefreshing()
         }
         isErrorBannerDisplayed = true
     }

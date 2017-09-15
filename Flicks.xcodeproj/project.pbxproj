@@ -85,13 +85,13 @@
 			name = Assets;
 			sourceTree = "<group>";
 		};
-		490A52B41F6C7ACD00D4083E /* View Model */ = {
+		490A52B41F6C7ACD00D4083E /* View Models */ = {
 			isa = PBXGroup;
 			children = (
 				490A52B21F6C7AC700D4083E /* MoviesTableViewDataSource.swift */,
 				49CDC17D1F6C7C15007907D8 /* MoviesCollectionViewDataSource.swift */,
 			);
-			name = "View Model";
+			name = "View Models";
 			sourceTree = "<group>";
 		};
 		4910B4E31F6B4325005A64F7 /* Models */ = {
@@ -135,7 +135,7 @@
 				49DEEC9D1F69B501005F783C /* AppDelegate.swift */,
 				4910B4E51F6B4529005A64F7 /* API */,
 				4910B4E31F6B4325005A64F7 /* Models */,
-				490A52B41F6C7ACD00D4083E /* View Model */,
+				490A52B41F6C7ACD00D4083E /* View Models */,
 				49DEECB31F69BFD8005F783C /* Controllers */,
 				49DEECB21F69BFCC005F783C /* Views */,
 				490A529E1F6B85A500D4083E /* Assets */,
@@ -149,8 +149,8 @@
 			children = (
 				4910B4DB1F6B1828005A64F7 /* Main.storyboard */,
 				4910B4DD1F6B2029005A64F7 /* LaunchScreen.storyboard */,
-				49DEECB01F69BFCA005F783C /* MovieCell.swift */,
 				49CDC17F1F6C7CED007907D8 /* MovieCollectionCell.swift */,
+				49DEECB01F69BFCA005F783C /* MovieCell.swift */,
 				490A52A31F6C20DA00D4083E /* GirdLayout.swift */,
 			);
 			path = Views;
