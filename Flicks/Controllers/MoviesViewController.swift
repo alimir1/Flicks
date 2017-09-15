@@ -42,8 +42,6 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
         return errorView
     }
     
-    var isListView: Bool = true
-
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
