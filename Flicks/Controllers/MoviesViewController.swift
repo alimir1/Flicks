@@ -14,11 +14,17 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
     @IBOutlet var tableView: UITableView!
     
     var refreshControl: UIRefreshControl!
-    var movies: [Movie] = []
+    var movies = [Movie]() {
+        didSet {
+            tableViewDataSource.movies = movies
+        }
+    }
     
     var endpoint = ""
     
     var movieAPI: TheMovieDBApi!
+    
+    var tableViewDataSource = MoviesTableViewDataSource()
     
     var errorBannerView: UIView!
     
@@ -31,7 +37,7 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
-        tableView.dataSource = self
+        tableView.dataSource = tableViewDataSource
         movieAPI = TheMovieDBApi(endpoint: endpoint)
         movieAPI.delegate = self
         refreshControl = UIRefreshControl()
@@ -97,30 +103,8 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
 }
 
 
-extension MoviesViewController: UITableViewDelegate, UITableViewDataSource {
-    
+extension MoviesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return movies.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "flickCell", for: indexPath) as! MovieCell
-        let movie = movies[indexPath.row]
-        cell.titleLabel.text = movie.title
-        cell.overViewLabel.text = movie.overview
-        cell.releaseYearLabel.text = movie.releaseYear
-        cell.averageVoteLabel.text = String(format: "%.1f", movie.avgRating ?? 0)
-        if let posterImageURL = movie.posterImageURLMedium {
-            cell.posterImageView.setImageWith(posterImageURL)
-        } else {
-            // FIXME: - Set placeholder
-        }
-        
-        
-        return cell
     }
 }
