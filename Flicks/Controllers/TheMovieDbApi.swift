@@ -56,19 +56,16 @@ class TheMovieDBApi: NSObject {
         self.endpoint = endpoint
     }
     
-//    var urlRequest: URLRequest {
-//        get {
-//            let url = URL(string: "https://api.themoviedb.org/3/movie/\(endpoint)?api_key=\(TheMovieDBApi.apiKey)")
-//            return URLRequest(url: url!)
-//        }
-//        
-//        set {}
-//    }
+    var urlRequest: URLRequest {
+        get {
+            let url = URL(string: "https://api.themoviedb.org/3/movie/\(endpoint)?api_key=\(TheMovieDBApi.apiKey)")
+            return URLRequest(url: url!)
+        }
+        
+        set {}
+    }
     
     func startUpdatingMovies() {
-        
-        var urlRequest = URLRequest(url: URL(string: "https://api.themoviedb.org/3/movie/\(endpoint)?api_key=\(TheMovieDBApi.apiKey)")!)
-        
         
         urlRequest.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
         let session = URLSession(
