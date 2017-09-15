@@ -18,6 +18,9 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
     var movies = [Movie]() {
         didSet {
             tableViewDataSource.movies = movies
+            collectionViewDataSource.movies = movies
+            tableView.reloadData()
+            collectionView.reloadData()
         }
     }
     
@@ -40,8 +43,11 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
         super.viewDidLoad()
         
         collectionView = UICollectionView(frame: view.frame, collectionViewLayout: GridLayout())
-        self.view.addSubview(collectionView)
+        collectionView.backgroundColor = .white
+        collectionView.register(MovieCollectionCell.self, forCellWithReuseIdentifier: "movieCollectionCell")
+        collectionView.showsVerticalScrollIndicator = false
         collectionView.dataSource = collectionViewDataSource
+        self.view.addSubview(collectionView)
         
         tableView.delegate = self
         tableView.dataSource = tableViewDataSource
@@ -73,7 +79,6 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
             if self.refreshControl.isRefreshing {
                 self.refreshControl.endRefreshing()
             }
-            self.tableView.reloadData()
         }
         isErrorBannerDisplayed = false
     }
