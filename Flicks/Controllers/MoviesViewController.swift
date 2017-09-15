@@ -9,10 +9,17 @@
 import UIKit
 import MBProgressHUD
 
+enum LayoutType {
+    case list
+    case grid
+}
+
 class MoviesViewController: UIViewController, TheMovieDBDelegate {
     
     @IBOutlet var tableView: UITableView!
     var collectionView: UICollectionView!
+    
+    var changeLayoutBarButtonItem: UIBarButtonItem!
     
     var refreshControl: UIRefreshControl!
     var movies = [Movie]() {
@@ -21,6 +28,19 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
             collectionViewDataSource.movies = movies
             tableView.reloadData()
             collectionView.reloadData()
+        }
+    }
+    
+    var displayType: LayoutType = .list {
+        didSet {
+            switch displayType {
+            case .list:
+                self.tableView.isHidden = false
+                self.collectionView.isHidden = true
+            case .grid:
+                self.tableView.isHidden = true
+                self.collectionView.isHidden = false
+            }
         }
     }
     
@@ -62,6 +82,27 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
         
         setupErrorBannerView()
         isErrorBannerDisplayed = false
+        
+        displayType = .list
+        
+        setupChangeLayoutBarButton()
+        
+        
+    }
+    
+    func setupChangeLayoutBarButton() {
+        changeLayoutBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(self.switchLayout))
+        changeLayoutBarButtonItem.title = "Change Layout"
+        self.navigationItem.leftBarButtonItem = changeLayoutBarButtonItem
+    }
+    
+    func switchLayout() {
+        switch displayType {
+        case .grid:
+            displayType = .list
+        case .list:
+            displayType = .grid
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

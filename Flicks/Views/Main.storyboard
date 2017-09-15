@@ -77,9 +77,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="aNb-m1-djG">
-                        <barButtonItem key="leftBarButtonItem" title="Item" id="EMY-Wo-zjL"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="aNb-m1-djG"/>
                     <connections>
                         <outlet property="tableView" destination="eco-sh-yJ2" id="YAn-Xr-hCy"/>
                     </connections>
