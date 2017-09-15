@@ -14,13 +14,25 @@ enum LayoutType {
     case grid
 }
 
-class MoviesViewController: UIViewController, TheMovieDBDelegate {
+class MoviesViewController: UIViewController {
+    
+    // MARK: - Outlets
     
     @IBOutlet var tableView: UITableView!
+    
+    // MARK: - Stored Properties
+    
     var collectionView: UICollectionView!
     var changeLayoutBarButtonItem: UIBarButtonItem!
     var tableViewRefreshControl: UIRefreshControl!
     var collectionViewRefreshControl: UIRefreshControl!
+    var endpoint = ""
+    var movieAPI: TheMovieDBApi!
+    var tableViewDataSource = MoviesTableViewDataSource()
+    var collectionViewDataSource = MoviesCollectionViewDataSource()
+    var errorBannerView: UIView!
+    
+    // MARK: - Property Observers
     
     var movies = [Movie]() {
         didSet {
@@ -44,27 +56,26 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
         }
     }
     
-    var endpoint = ""
-    var movieAPI: TheMovieDBApi!
-    var tableViewDataSource = MoviesTableViewDataSource()
-    var collectionViewDataSource = MoviesCollectionViewDataSource()
-    var errorBannerView: UIView!
     var isErrorBannerDisplayed: Bool! {
         didSet {
             errorBannerView.isHidden = !isErrorBannerDisplayed
         }
     }
     
+    // MARK: - Lifecycles
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        movieAPI = TheMovieDBApi(endpoint: endpoint)
+        movieAPI.delegate = self
         fetchDataFromWeb()
         self.edgesForExtendedLayout = []
         isErrorBannerDisplayed = false
         displayType = .list
     }
     
-    // Target Action
+    // MARK: - Target Action
     
     func switchLayout() {
         switch displayType {
@@ -74,11 +85,25 @@ class MoviesViewController: UIViewController, TheMovieDBDelegate {
             displayType = .grid
         }
     }
+    
+    func refreshData() {
+        fetchDataFromWeb()
+    }
 }
 
-// MARK: - TheMovieDb
+
+// MARK: - Network Requests
 
 extension MoviesViewController {
+    func fetchDataFromWeb() {
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        movieAPI.startUpdatingMovies()
+    }
+}
+
+// MARK: - TheMovieDbApi Delegate
+
+extension MoviesViewController: TheMovieDBDelegate {
     func theMovieDB(didFinishUpdatingMovies movies: [Movie]) {
         MBProgressHUD.hide(for: self.view, animated: true)
         self.movies = movies
@@ -96,11 +121,6 @@ extension MoviesViewController {
             self.collectionViewRefreshControl.endRefreshing()
         }
         isErrorBannerDisplayed = true
-    }
-    
-    @objc func fetchDataFromWeb() {
-        MBProgressHUD.showAdded(to: self.view, animated: true)
-        movieAPI.startUpdatingMovies()
     }
 }
 
@@ -147,18 +167,16 @@ extension MoviesViewController {
     func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = tableViewDataSource
-        movieAPI = TheMovieDBApi(endpoint: endpoint)
-        movieAPI.delegate = self
     }
     
     func setupRefreshControls() {
         collectionViewRefreshControl = UIRefreshControl()
-        collectionViewRefreshControl.addTarget(self, action: #selector(self.fetchDataFromWeb), for: .valueChanged)
+        collectionViewRefreshControl.addTarget(self, action: #selector(self.refreshData), for: .valueChanged)
         collectionView.insertSubview(collectionViewRefreshControl, at: 0)
         
         
         tableViewRefreshControl = UIRefreshControl()
-        tableViewRefreshControl.addTarget(self, action: #selector(self.fetchDataFromWeb), for: .valueChanged)
+        tableViewRefreshControl.addTarget(self, action: #selector(self.refreshData), for: .valueChanged)
         tableView.insertSubview(tableViewRefreshControl, at: 0)
     }
     
