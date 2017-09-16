@@ -39,7 +39,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+Figuring out how to subclass UIKit classes was the toughest part. Also I spent a lot of time figuring out how to toggle between grid and list layout. I figured the best way to implement it is to create a single UICollectionView but have two different Layouts (ie GridLayout and ListLayout). I started working on that for many hours until I realized that the easier way (though not the best practice) is just to create a tableView and collectionView and use "isHidden" properties to update layouts. I learned not to go too deep on something when the specs clearly specify what to do and how to do it :)
 
 ## License
 
