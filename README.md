@@ -43,7 +43,7 @@ Figuring out how to subclass UIKit classes was the toughest part. Also I spent a
 
 ## License
 
-    Copyright [yyyy] [name of copyright owner]
+    Copyright 2017 Ali Mir
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
