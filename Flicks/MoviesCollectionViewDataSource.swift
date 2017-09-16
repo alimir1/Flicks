@@ -19,9 +19,9 @@ class MoviesCollectionViewDataSource: NSObject, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "movieCollectionCell", for: indexPath) as! MovieCollectionCell
         if let posterImageURL = movies[indexPath.row].posterImageURLMedium {
-            cell.posterImageView.setImageWith(posterImageURL)
+            cell.posterImageView.setImageWith(posterImageURL, placeholderImage: #imageLiteral(resourceName: "placeholderImage"))
         } else {
-            // FIXME: - Set placeholder
+            cell.posterImageView.image = #imageLiteral(resourceName: "placeholderImage")
         }
         return cell
     }

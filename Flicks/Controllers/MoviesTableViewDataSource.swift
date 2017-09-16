@@ -20,9 +20,9 @@ class MoviesTableViewDataSource: NSObject, UITableViewDataSource {
         cell.releaseYearLabel.text = movie.releaseYear
         cell.averageVoteLabel.text = String(format: "%.1f", movie.avgRating ?? 0)
         if let posterImageURL = movie.posterImageURLMedium {
-            cell.posterImageView.setImageWith(posterImageURL)
+            cell.posterImageView.setImageWith(posterImageURL, placeholderImage: #imageLiteral(resourceName: "placeholderImage"))
         } else {
-            // FIXME: - Set placeholder
+            cell.posterImageView.image = #imageLiteral(resourceName: "placeholderImage")
         }
         return cell
     }

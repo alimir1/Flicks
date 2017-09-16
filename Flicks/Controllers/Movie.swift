@@ -14,6 +14,7 @@ class Movie: NSObject {
     private(set)var overview: String?
     private(set)var posterImageURLMedium: URL?
     private(set)var posterImageURLHigh: URL?
+    private(set)var posterImageURLLow: URL?
     private(set)var releaseYear: String?
     
     init(dictionary: NSDictionary) {
@@ -29,6 +30,7 @@ class Movie: NSObject {
         if let posterImagePath = posterImagePath {
             self.posterImageURLMedium = URL(string: TheMovieDBApi.posterImageBaseStr + "w500" + posterImagePath)
             self.posterImageURLHigh = URL(string: TheMovieDBApi.posterImageBaseStr + "original" + posterImagePath)
+            self.posterImageURLLow = URL(string: TheMovieDBApi.posterImageBaseStr + "w45" + posterImagePath)
         }
     }
     
