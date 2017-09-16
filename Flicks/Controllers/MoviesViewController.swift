@@ -19,6 +19,7 @@ class MoviesViewController: UIViewController {
     // MARK: - Outlets
     
     @IBOutlet var tableView: UITableView!
+    @IBOutlet var searchBar: UISearchBar!
     
     // MARK: - Stored Properties
     
@@ -31,13 +32,15 @@ class MoviesViewController: UIViewController {
     var tableViewDataSource = MoviesTableViewDataSource()
     var collectionViewDataSource = MoviesCollectionViewDataSource()
     var errorBannerView: UIView!
+    var movies = [Movie]()
     
     // MARK: - Property Observers
     
-    var movies = [Movie]() {
+    
+    var filteredMovies = [Movie]() {
         didSet {
-            tableViewDataSource.movies = movies
-            collectionViewDataSource.movies = movies
+            tableViewDataSource.movies = filteredMovies
+            collectionViewDataSource.movies = filteredMovies
             tableView.reloadData()
             collectionView.reloadData()
         }
@@ -73,6 +76,7 @@ class MoviesViewController: UIViewController {
         self.edgesForExtendedLayout = []
         isErrorBannerDisplayed = false
         displayType = .list
+        searchBar.delegate = self
     }
     
     // MARK: - Target Action
@@ -103,12 +107,31 @@ extension MoviesViewController {
     }
 }
 
+// MARK: - SearchBar Delegate
+
+extension MoviesViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        filteredMovies = searchText.isEmpty ? movies :  movies.filter {($0.title ?? "").range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil }
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        self.searchBar.showsCancelButton = true
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
+    }
+}
+
 // MARK: - TheMovieDbApi Delegate
 
 extension MoviesViewController: TheMovieDBDelegate {
     func theMovieDB(didFinishUpdatingMovies movies: [Movie]) {
         MBProgressHUD.hide(for: self.view, animated: true)
         self.movies = movies
+        self.filteredMovies = movies
         DispatchQueue.main.async {
             self.tableViewRefreshControl.endRefreshing()
             self.collectionViewRefreshControl.endRefreshing()

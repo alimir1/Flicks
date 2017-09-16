@@ -21,9 +21,14 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <searchBar key="tableHeaderView" contentMode="redraw" id="HLd-5k-QQZ">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </searchBar>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="flickCell" id="JM1-9I-5Qn" customClass="MovieCell" customModule="Flicks" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="200"/>
+                                        <rect key="frame" x="0.0" y="72" width="375" height="200"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JM1-9I-5Qn" id="e0d-6G-zqa">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
@@ -79,6 +84,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="aNb-m1-djG"/>
                     <connections>
+                        <outlet property="searchBar" destination="HLd-5k-QQZ" id="vsX-Jg-uFQ"/>
                         <outlet property="tableView" destination="eco-sh-yJ2" id="YAn-Xr-hCy"/>
                     </connections>
                 </viewController>
