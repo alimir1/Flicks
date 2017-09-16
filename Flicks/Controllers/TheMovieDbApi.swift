@@ -47,7 +47,7 @@ extension TheMovieDBErrors: LocalizedError {
 
 class TheMovieDBApi: NSObject {
     static let apiKey: String = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-    static let posterImageBaseStr: String = "https://image.tmdb.org/t/p/"
+    static let imageBaseStr: String = "https://image.tmdb.org/t/p/"
     
     var delegate: TheMovieDBDelegate?
     var endpoint: String

@@ -84,10 +84,10 @@ class MoviesViewController: UIViewController {
     func switchLayout() {
         switch displayType {
         case .grid:
-            changeLayoutBarButtonItem.title = "Grid"
+            changeLayoutBarButtonItem.image = #imageLiteral(resourceName: "Grid")
             displayType = .list
         case .list:
-            changeLayoutBarButtonItem.title = "List"
+            changeLayoutBarButtonItem.image = #imageLiteral(resourceName: "List")
             displayType = .grid
         }
     }
@@ -193,7 +193,7 @@ extension MoviesViewController {
     func setupCollectionView() {
         collectionView = UICollectionView(frame: view.frame, collectionViewLayout: GridLayout())
         collectionView.delegate = self
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = UIColor(red:0.00, green:0.10, blue:0.08, alpha:1.0)
         collectionView.register(MovieCollectionCell.self, forCellWithReuseIdentifier: "movieCollectionCell")
         collectionView.showsVerticalScrollIndicator = false
         collectionView.dataSource = collectionViewDataSource
@@ -217,7 +217,7 @@ extension MoviesViewController {
     }
     
     func setupChangeLayoutBarButton() {
-        changeLayoutBarButtonItem = UIBarButtonItem(title: "Grid", style: .plain, target: self, action: #selector(self.switchLayout))
+        changeLayoutBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "Grid"), style: .plain, target: self, action: #selector(self.switchLayout))
         self.navigationItem.leftBarButtonItem = changeLayoutBarButtonItem
     }
     
