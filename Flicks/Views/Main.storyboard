@@ -31,7 +31,7 @@
                                         <rect key="frame" x="0.0" y="72" width="375" height="200"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JM1-9I-5Qn" id="e0d-6G-zqa">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="199.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lHi-cU-ahC">
@@ -74,7 +74,6 @@
                                             <outlet property="posterImageView" destination="fMZ-bf-NkG" id="wMU-9t-G8l"/>
                                             <outlet property="releaseYearLabel" destination="re4-cj-YIy" id="sPn-vl-Fue"/>
                                             <outlet property="titleLabel" destination="lHi-cU-ahC" id="Xz6-TL-VbR"/>
-                                            <segue destination="6d5-6r-5Rs" kind="push" identifier="movieDetail" id="tl1-OI-8rV"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -95,7 +94,7 @@
         <!--Movie Detail View Controller-->
         <scene sceneID="lBp-Kc-plA">
             <objects>
-                <viewController id="6d5-6r-5Rs" customClass="MovieDetailViewController" customModule="Flicks" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="movieDetailVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="6d5-6r-5Rs" customClass="MovieDetailViewController" customModule="Flicks" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="11c-1z-NVo">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

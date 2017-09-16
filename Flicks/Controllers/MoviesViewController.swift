@@ -121,6 +121,7 @@ extension MoviesViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.showsCancelButton = false
         searchBar.text = ""
+        filteredMovies = movies
         searchBar.resignFirstResponder()
     }
 }
@@ -152,12 +153,12 @@ extension MoviesViewController: TheMovieDBDelegate {
 // MARK: - Navigation
 
 extension MoviesViewController {
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "movieDetail" {
-            let movieDetailVC = segue.destination as! MovieDetailViewController
-            let indexPath = tableView.indexPath(for: sender as! UITableViewCell)
-            movieDetailVC.movie = movies[indexPath!.row]
-        }
+    
+    func pushToDetailVC(with indexPath: IndexPath) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let detailVC = storyboard.instantiateViewController(withIdentifier: "movieDetailVC") as! MovieDetailViewController
+        detailVC.movie = filteredMovies[indexPath.row]
+        self.navigationController?.pushViewController(detailVC, animated: true)
     }
 }
 
@@ -166,6 +167,15 @@ extension MoviesViewController {
 extension MoviesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
+        pushToDetailVC(with: indexPath)
+    }
+}
+
+// MARK: - CollectionView Delegate
+
+extension MoviesViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        pushToDetailVC(with: indexPath)
     }
 }
 
@@ -182,6 +192,7 @@ extension MoviesViewController {
     
     func setupCollectionView() {
         collectionView = UICollectionView(frame: view.frame, collectionViewLayout: GridLayout())
+        collectionView.delegate = self
         collectionView.backgroundColor = .white
         collectionView.register(MovieCollectionCell.self, forCellWithReuseIdentifier: "movieCollectionCell")
         collectionView.showsVerticalScrollIndicator = false
