@@ -15,15 +15,18 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - MBProgressHUD (1.0.0)
+  - SwiftLint (0.18.1)
 
 DEPENDENCIES:
   - AFNetworking
   - MBProgressHUD
+  - SwiftLint
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  SwiftLint: b467d08f5b25dc3b3cfed243d8e1b74b91714c67
 
-PODFILE CHECKSUM: cb9912532fc338f3cf7b3f282f0f2e214610d05f
+PODFILE CHECKSUM: 099994df3205fd1e9ed6ae3cf4d5c1ebb8365199
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.3.1
