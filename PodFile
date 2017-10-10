@@ -8,4 +8,5 @@ target 'Flicks' do
   # Pods for Flicks
   pod 'AFNetworking'
   pod 'MBProgressHUD'
+  pod 'SwiftLint'
 end
